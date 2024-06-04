@@ -128,22 +128,10 @@ const merchantSchema = new Schema(
       required: [true, 'Local guardian information is required'],
     },
     profileImg: { type: String, default: '' },
-    admissionSemester: {
-      type: Schema.Types.ObjectId,
-      ref: 'AcademicSemester',
-    },
     isDeleted: {
       type: Boolean,
       default: false,
-    },
-    academicDepartment: {
-      type: Schema.Types.ObjectId,
-      ref: 'AcademicDepartment',
-    },
-    academicFaculty: {
-      type: Schema.Types.ObjectId,
-      ref: 'AcademicFaculty',
-    },
+    }
   },
   {
     toJSON: {

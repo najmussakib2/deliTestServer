@@ -20,7 +20,7 @@ router.get("/:id", auth(
   USER_ROLE.student,
 ), parcelController.getSpacificParcel);
 
-router.post("/create-parcel", auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+router.post("/create-parcel", auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.merchant),
   validateRequest(parcelZodSchema), parcelController.createParcel);
 
 router.patch("/change-payment/:id", parcelController.updateParcelPayment);

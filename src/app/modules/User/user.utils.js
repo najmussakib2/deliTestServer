@@ -1,6 +1,6 @@
 import { User } from './user.model.js';
 
-const findLastmerchantId = async () => {
+const findLastMerchantId = async () => {
   const lastmerchant = await User.findOne(
     {
       role: 'merchant',
@@ -18,64 +18,21 @@ const findLastmerchantId = async () => {
   return lastmerchant?.id ? lastmerchant.id : undefined;
 };
 
-export const generatemerchantId = async (payload) => {
+export const generateMerchantId = async (payload) => {
   let currentId = (0).toString();
-  const lastmerchantId = await findLastmerchantId();
+  const lastMerchantId = await findLastMerchantId();
 
-  const lastmerchantSemesterCode = lastmerchantId?.substring(4, 6);
-  const lastmerchantYear = lastmerchantId?.substring(0, 4);
-
-  const currentSemesterCode = payload.code;
-  const currentYear = payload.year;
-
-  if (
-    lastmerchantId &&
-    lastmerchantSemesterCode === currentSemesterCode &&
-    lastmerchantYear === currentYear
-  ) {
-    currentId = lastmerchantId.substring(6);
+  if (lastMerchantId) {
+    currentId = lastMerchantId.substring(2);
   }
 
   let incrementId = (Number(currentId) + 1).toString().padStart(4, '0');
 
-  incrementId = `${payload.year}${payload.code}${incrementId}`;
+  incrementId = `M-${incrementId}`;
 
   return incrementId;
 };
 
-// Faculty ID
-export const findLastFacultyId = async () => {
-  const lastFaculty = await User.findOne(
-    {
-      role: 'faculty',
-    },
-    {
-      id: 1,
-      _id: 0,
-    },
-  )
-    .sort({
-      createdAt: -1,
-    })
-    .lean();
-
-  return lastFaculty?.id ? lastFaculty.id.substring(2) : undefined;
-};
-
-export const generateFacultyId = async () => {
-  let currentId = (0).toString();
-  const lastFacultyId = await findLastFacultyId();
-
-  if (lastFacultyId) {
-    currentId = lastFacultyId.substring(2);
-  }
-
-  let incrementId = (Number(currentId) + 1).toString().padStart(4, '0');
-
-  incrementId = `F-${incrementId}`;
-
-  return incrementId;
-};
 
 // Admin ID
 export const findLastAdminId = async () => {

@@ -2,6 +2,7 @@
 
 const handleDuplicateError = (err) => {
   // Extract value within double quotes using regex
+  console.log(err)
   const match = err.message.match(/"([^"]*)"/);
 
   // The extracted value will be in the first capturing group

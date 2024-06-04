@@ -19,7 +19,10 @@ router.get("/",auth(
     USER_ROLE.admin,
   ), shopController.getAllShops);
 
-router.get("/:email", shopController.getSpecificShopForMarchant);
+router.get("/:email",auth(
+  USER_ROLE.superAdmin,
+  USER_ROLE.admin,
+), shopController.getSpecificShopForMarchant);
 
 router.delete("/delete-shop/:id", shopController.deleteShop) 
 

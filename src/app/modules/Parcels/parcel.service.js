@@ -1,8 +1,8 @@
 
 import mongoose from "mongoose";
-import QueryBuilder from "../../builder/QueryBuilder.js";
 import { parcelSearchableFields } from "./parcel.const.js";
 import { Parcel } from "./parcel.model.js";
+import QueryBuilder from "../../builder/QueryBuilder.js";
 
 
 const createParcelInDB = async (data) => {
@@ -63,13 +63,14 @@ const deleteSingleParcelFromDB = async (_id) => {
 };
 const getAllParcelsFromDB = async (query) => {
   const resultQuery = new QueryBuilder(Parcel.find(), query)
-    .search(parcelSearchableFields)
-    .filter()
-    .sort()
-    .fields()
-    .paginate()
-    .limit();
+    .search(parcelSearchableFields)  
+    .filter()                        
+    .sort()                          
+    .fields()                        
+    .paginate()                  
+    .limit();                        
   const result = await resultQuery.modelQuery;
+  console.log(result)
   const meta = await resultQuery.countTotal();
   return { data: result, meta };
 };

@@ -1,4 +1,6 @@
+import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync.js";
+import sendResponse from "../../utils/sendResponse.js";
 import { parcelServices } from "./parcel.service.js";
 
 const createParcel = catchAsync(async (req, res) => {
@@ -72,13 +74,13 @@ const deleteSingleParcel = catchAsync(async (req, res) => {
 
 const getAllParcels = catchAsync(async (req, res) => {
   const result = await parcelServices.getAllParcelsFromDB(req.query);
-
+  console.log("77 controller",result)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'parcels are retrieved successfully',
     meta: result.meta,
-    data: result.result,
+    data: result.data,
   });
 });
 

@@ -10,8 +10,7 @@ import { merchant } from '../merchant/merchant.model.js';
 import { User } from './user.model.js';
 import {
   generateAdminId,
-  generateFacultyId,
-  generatemerchantId,
+  generateMerchantId,
 } from './user.utils.js';
 
 const createmerchantIntoDB = async (
@@ -30,31 +29,13 @@ const createmerchantIntoDB = async (
   // set merchant email
   userData.email = payload.email;
 
-  // find academic semester info
-  const admissionSemester = await AcademicSemester.findById(
-    payload.admissionSemester,
-  );
-
-  if (!admissionSemester) {
-    throw new AppError(400, 'Admission semester not found');
-  }
-
-  // find department
-  const academicDepartment = await AcademicDepartment.findById(
-    payload.academicDepartment,
-  );
-
-  if (!academicDepartment) {
-    throw new AppError(400, 'Aademic department not found');
-  }
-  payload.academicFaculty = academicDepartment.academicFaculty;
 
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
     //set  generated id
-    userData.id = await generatemerchantId(admissionSemester);
+    userData.id = await generateMerchantId();
 
     if (file) {
       const imageName = `${userData.id}${payload?.name?.firstName}`;
@@ -75,7 +56,7 @@ const createmerchantIntoDB = async (
     // set id , _id as user
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id; //reference _id
-
+    console.log(payload);
     // create a merchant (transaction-2)
     const newmerchant = await merchant.create([payload], { session });
 
@@ -95,14 +76,10 @@ const createmerchantIntoDB = async (
 };
 
 
-const createAdminIntoDB = async (
-  file,
-  password,
-  payload,
-) => {
+const createAdminIntoDB = async (file,password,payload) => {
   // create a user object
   const userData = {};
-
+  console.log(file, password, payload)
   //if password is not given , use deafult password
   userData.password = password || (config.default_password);
 
@@ -110,6 +87,7 @@ const createAdminIntoDB = async (
   userData.role = 'admin';
   //set admin email
   userData.email = payload.email;
+
   const session = await mongoose.startSession();
 
   try {

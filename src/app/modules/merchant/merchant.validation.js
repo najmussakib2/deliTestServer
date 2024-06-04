@@ -43,8 +43,6 @@ export const createmerchantValidationSchema = z.object({
       permanentAddress: z.string(),
       guardian: createGuardianValidationSchema,
       localGuardian: createLocalGuardianValidationSchema,
-      admissionSemester: z.string(),
-      academicDepartment: z.string(),
     }),
   }),
 });
@@ -87,8 +85,6 @@ export const updatemerchantValidationSchema = z.object({
       permanentAddress: z.string().optional(),
       guardian: updateGuardianValidationSchema.optional(),
       localGuardian: updateLocalGuardianValidationSchema.optional(),
-      admissionSemester: z.string().optional(),
-      academicDepartment: z.string().optional(),
     }),
   }),
 });

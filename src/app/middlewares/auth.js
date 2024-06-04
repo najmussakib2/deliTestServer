@@ -61,7 +61,7 @@ const auth = (...requiredRoles) => {
       );
     }
 
-    req.user = decoded & { role: string };
+    req.user = decoded & { role };
     next();
   });
 };

@@ -86,12 +86,11 @@ const parcelSchema = new Schema({
       type: String,
       enum : ['paid','unpaid'],
       required: true
-    },
-    createdAt: {
-      type: String,
-      default: () => new Date().toISOString().split('T')[0]
     }
-  }
+  },
+  {
+    timestamps: true,
+  },
 );
   
 export const Parcel = model('Parcel', parcelSchema);
