@@ -1,34 +1,48 @@
-import  express  from "express";
+import express from "express";
 import { parcelController } from "./parcel.controller.js";
-import { Barrier } from "../app/accessBarrier.js";
+import auth from "../../middlewares/auth.js";
+import { USER_ROLE } from "../User/user.constant.js";
+import validateRequest from "../../middlewares/validateRequest.js";
+import { parcelZodSchema } from "./parcel.zodValidation.js";
+
 
 const router = express.Router()
 
-router.get("/",  parcelController.getAllParcels);
+router.get("/", auth(
+  USER_ROLE.superAdmin,
+  USER_ROLE.admin,
+  USER_ROLE.student,
+), parcelController.getAllParcels);
 
-router.get("/parcels-approved",Barrier.verifyJWT, parcelController.getAllApprovedParcels);
+router.get("/:id", auth(
+  USER_ROLE.superAdmin,
+  USER_ROLE.admin,
+  USER_ROLE.student,
+), parcelController.getSpacificParcel);
 
-router.get('/parcels-unpaid',Barrier.verifyJWT, parcelController.getAllUnpaidParcels);
-
-router.get("/parcels-paid",Barrier.verifyJWT, parcelController.getAllPaidParcels);
-
-router.get("/:id",Barrier.verifyJWT, parcelController.getSpacificParcel);
-
-router.post("/create-parcel", parcelController.createParcel);
+router.post("/create-parcel", auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  validateRequest(parcelZodSchema), parcelController.createParcel);
 
 router.patch("/change-payment/:id", parcelController.updateParcelPayment);
 
-router.patch("/change-status/:id",Barrier.verifyJWT, parcelController.updateParcelStatus);
+router.patch(
+  '/:id',
+  auth(USER_ROLE.superAdmin, USER_ROLE.admin),
+  validateRequest(parcelZodSchema),
+  parcelController.updateParcel,
+);
 
-router.delete("/:id",Barrier.verifyJWT, parcelController.deleteSingleParcel);
+router.patch("/change-status/:id", parcelController.updateParcelStatus);
 
-router.get("/parcels-email/:email",Barrier.verifyJWT, parcelController.getSpacificParcelForMerchant);
+router.delete("/:id", auth(USER_ROLE.superAdmin, USER_ROLE.admin), parcelController.deleteSingleParcel);
 
-router.get("/parcels-shop/:name",Barrier.verifyJWT, parcelController.getAllParcelsByShop);
+router.get("/parcels-email/:email", parcelController.getSpacificParcelForMerchant);
 
-router.get("/parcels-unpaid/:email",Barrier.verifyJWT, parcelController.getUnpaidParcelByEmail);
+router.get("/parcels-shop/:name", parcelController.getAllParcelsByShop);
 
-router.get("/parcels-paid/:email",Barrier.verifyJWT, parcelController.getPaidParcelByEmail);
+router.get("/parcels-unpaid/:email", parcelController.getUnpaidParcelByEmail);
+
+router.get("/parcels-paid/:email", parcelController.getPaidParcelByEmail);
 
 
-export  const parcelRoutes = router;
+export const parcelRoutes = router;

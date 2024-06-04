@@ -1,23 +1,30 @@
+import catchAsync from "../../utils/catchAsync.js";
 import { parcelServices } from "./parcel.service.js";
-import { parcelZodSchema } from "./parcel.zodValidation.js";
 
-const createParcel = async (req, res) => {
-  try {
-    const { parcel } = req.body;
-    console.log(parcel)
-    console.log(req.body)
-    const zodParsedData = parcelZodSchema.parse(parcel);
-    const result = await parcelServices.createParcelInDB(zodParsedData);
+const createParcel = catchAsync(async (req, res) => {
+  const result = await parcelServices.createParcelInDB(req.body);
 
-    res.status(200).json({
-      success: true,
-      message: "parcels are retrieved succesfully",
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'parcel is created successfully',
+    data: result,
+  });
+});
+
+const updateParcel = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await parcelServices.updateParcelIntoDB(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'course is updated successfully',
+    data: result,
+  });
+});
+
+
 const updateParcelStatus = async (req, res) => {
   try {
 
@@ -50,74 +57,32 @@ const updateParcelPayment = async (req, res) => {
     console.log(err);
   }
 };
-const deleteSingleParcel = async (req, res) => {
-  try {
 
-    const  Id  = req.params.id;
-    const result = await parcelServices.deleteSingleParcelFromDB(Id);
+const deleteSingleParcel = catchAsync(async (req, res) => {
+  const  Id  = req.params.id;
+  const result = await parcelServices.deleteSingleParcelFromDB(Id);
 
-    res.status(200).json({
-      success: true,
-      message: "parcels are retrieved succesfully",
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-const getAllParcels = async (req, res) => {
-  try {
-    const result = await parcelServices.getAllParcelsFromDB(req.query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'parcel is deleted successfully',
+    data: result,
+  });
+});
 
-    res.status(200).json({
-      success: true,
-      message: "parcels are retrieved succesfully",
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+const getAllParcels = catchAsync(async (req, res) => {
+  const result = await parcelServices.getAllParcelsFromDB(req.query);
 
-const getAllApprovedParcels = async (req, res) => {
-  try {
-    const result = await parcelServices.getAllApprovedParcelsFromDB();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'parcels are retrieved successfully',
+    meta: result.meta,
+    data: result.result,
+  });
+});
 
-    res.status(200).json({
-      success: true,
-      message: "parcels are retrieved succesfully",
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-const getAllUnpaidParcels = async (req, res) => {
-  try {
-    const result = await parcelServices.getAllUnpaidParcelsFromDB();
 
-    res.status(200).json({
-      success: true,
-      message: "parcels are retrieved succesfully",
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-const getAllPaidParcels = async (req, res) => {
-  try {
-    const result = await parcelServices.getAllPaidParcelsFromDB();
-
-    res.status(200).json({
-      success: true,
-      message: "parcels are retrieved succesfully",
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
 const getSpacificParcel = async (req, res) => {
   try {
 
@@ -198,11 +163,9 @@ const getPaidParcelByEmail = async (req, res) => {
 
 export const parcelController = {
   getAllParcels,
-  getAllApprovedParcels,
-  getAllUnpaidParcels,
-  getAllPaidParcels,
   getSpacificParcel,
   createParcel,
+  updateParcel,
   updateParcelStatus,
   updateParcelPayment,
   deleteSingleParcel,
