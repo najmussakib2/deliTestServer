@@ -168,3 +168,123 @@ merchantSchema.statics.isUserExists = async function (id) {
 };
 
 export const merchant = model('merchant', merchantSchema);
+
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------
+const mongoose = require('mongoose');
+
+const companySchema = new mongoose.Schema({
+  companyName: {
+    type: String,
+    required: true
+  },
+  siteUrl: {
+    type: String
+  },
+  city: {
+    type: String,
+    required: true
+  },
+  zone: {
+    type: String
+  }
+});
+
+const accountSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  mobile: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  }
+});
+
+const paymentSchema = new mongoose.Schema({
+  bkash: {
+    type: {
+      bkashType: {
+        type: String,
+        enum: ['agent', 'personal'],
+        required: true
+      },
+      bkashNumber: {
+        type: String,
+        required: true
+      }
+    }
+  },
+  bank: {
+    type: {
+      bankName: {
+        type: String,
+        enum: ['brac', 'dbbl', 'other'],
+        required: true
+      },
+      accountHolder: {
+        type: String,
+        required: true
+      },
+      accountNumber: {
+        type: String,
+        required: true
+      },
+      branchName: {
+        type: String
+      },
+      routingNumber: {
+        type: String
+      }
+    }
+  }
+});
+
+const Merchant = mongoose.model('Merchant', {
+  companyInfo: companySchema,
+  accountInfo: accountSchema,
+  paymentDetails: paymentSchema
+});
+
+module.exports = Merchant;
+//json data demo by following above schema
+// {
+//   "companyInfo": {
+//     "companyName": "XYZ Express",
+//     "siteUrl": "https://xyzexpress.com",
+//     "city": "Dhaka",
+//     "zone": "Gulshan"
+//   },
+//   "accountInfo": {
+//     "name": "John Doe",
+//     "email": "john.doe@example.com",
+//     "mobile": "0123456789",
+//     "password": "mypassword123"
+//   },
+//   "paymentDetails": {
+//     "bkash": {
+//       "bkashType": "agent",
+//       "bkashNumber": "0123456789"
+//     },
+//     "bank": {
+//       "bankName": "brac",
+//       "accountHolder": "John Doe",
+//       "accountNumber": "1234567890",
+//       "branchName": "Gulshan Branch",
+//       "routingNumber": "123456"
+//     }
+//   }
+// }
