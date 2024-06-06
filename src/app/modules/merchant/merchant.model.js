@@ -1,183 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-
-const userNameSchema = new Schema({
-  firstName: {
-    type: String,
-    required: [true, 'First Name is required'],
-    trim: true,
-    maxlength: [20, 'Name can not be more than 20 characters'],
-  },
-  middleName: {
-    type: String,
-    trim: true,
-  },
-  lastName: {
-    type: String,
-    trim: true,
-    required: [true, 'Last Name is required'],
-    maxlength: [20, 'Name can not be more than 20 characters'],
-  },
-});
-
-const guardianSchema = new Schema({
-  fatherName: {
-    type: String,
-    trim: true,
-    required: [true, 'Father Name is required'],
-  },
-  fatherOccupation: {
-    type: String,
-    trim: true,
-    required: [true, 'Father occupation is required'],
-  },
-  fatherContactNo: {
-    type: String,
-    required: [true, 'Father Contact No is required'],
-  },
-  motherName: {
-    type: String,
-    required: [true, 'Mother Name is required'],
-  },
-  motherOccupation: {
-    type: String,
-    required: [true, 'Mother occupation is required'],
-  },
-  motherContactNo: {
-    type: String,
-    required: [true, 'Mother Contact No is required'],
-  },
-});
-
-const localGuradianSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, 'Name is required'],
-  },
-  occupation: {
-    type: String,
-    required: [true, 'Occupation is required'],
-  },
-  contactNo: {
-    type: String,
-    required: [true, 'Contact number is required'],
-  },
-  address: {
-    type: String,
-    required: [true, 'Address is required'],
-  },
-});
-
-const merchantSchema = new Schema(
-  {
-    id: {
-      type: String,
-      required: [true, 'ID is required'],
-      unique: true,
-    },
-    user: {
-      type: Schema.Types.ObjectId,
-      required: [true, 'User id is required'],
-      unique: true,
-      ref: 'User',
-    },
-    name: {
-      type: userNameSchema,
-      required: [true, 'Name is required'],
-    },
-    gender: {
-      type: String,
-      enum: {
-        values: ['male', 'female', 'other'],
-        message: '{VALUE} is not a valid gender',
-      },
-      required: [true, 'Gender is required'],
-    },
-    dateOfBirth: { type: Date },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-    },
-    contactNo: { type: String, required: [true, 'Contact number is required'] },
-    emergencyContactNo: {
-      type: String,
-      required: [true, 'Emergency contact number is required'],
-    },
-    bloodGroup: {
-      type: String,
-      enum: {
-        values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
-        message: '{VALUE} is not a valid blood group',
-      },
-    },
-    presentAddress: {
-      type: String,
-      required: [true, 'Present address is required'],
-    },
-    permanentAddress: {
-      type: String,
-      required: [true, 'Permanent address is required'],
-    },
-    guardian: {
-      type: guardianSchema,
-      required: [true, 'Guardian information is required'],
-    },
-    localGuardian: {
-      type: localGuradianSchema,
-      required: [true, 'Local guardian information is required'],
-    },
-    profileImg: { type: String, default: '' },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    }
-  },
-  {
-    toJSON: {
-      virtuals: true,
-    },
-  },
-);
-
-//virtual
-merchantSchema.virtual('fullName').get(function () {
-  return this?.name?.firstName + this?.name?.middleName + this?.name?.lastName;
-});
-
-// Query Middleware
-merchantSchema.pre('find', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-merchantSchema.pre('findOne', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-merchantSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
-  next();
-});
-
-//creating a custom static method
-merchantSchema.statics.isUserExists = async function (id) {
-  const existingUser = await merchant.findOne({ id });
-  return existingUser;
-};
-
-export const merchant = model('merchant', merchantSchema);
-
-
-
-
-
-
-//------------------------------------------------------------------------------------------------------------
-const mongoose = require('mongoose');
-
-const companySchema = new mongoose.Schema({
+const companySchema = new Schema({
   companyName: {
     type: String,
     required: true
@@ -194,27 +17,7 @@ const companySchema = new mongoose.Schema({
   }
 });
 
-const accountSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  mobile: {
-    type: String,
-    required: true
-  },
-  password: {
-    type: String,
-    required: true
-  }
-});
-
-const paymentSchema = new mongoose.Schema({
+const paymentSchema = new Schema({
   bkash: {
     type: {
       bkashType: {
@@ -253,38 +56,90 @@ const paymentSchema = new mongoose.Schema({
   }
 });
 
-const Merchant = mongoose.model('Merchant', {
-  companyInfo: companySchema,
-  accountInfo: accountSchema,
-  paymentDetails: paymentSchema
+
+const merchantSchema = new Schema(
+  {
+    id: {
+      type: String,
+      required: [true, 'ID is required'],
+      unique: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
+    },
+    company: {
+      type: companySchema,
+      required: [true, 'Company details is required'],
+    },
+    payment: {
+      type: paymentSchema,
+      required: [true, 'Payment details is required'],
+    },
+    name: {
+      type: String,
+      required: [true, 'Name is required'],
+    },
+    gender: {
+      type: String,
+      enum: {
+        values: ['male', 'female', 'other'],
+        message: '{VALUE} is not a valid gender',
+      },
+      required: [true, 'Gender is required'],
+    },
+
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+    },
+    contactNo: { 
+      type: String, 
+      required: [true, 'Contact number is required'] 
+    },
+    emergencyContactNo: {
+      type: String,
+      required: [true, 'Emergency contact number is required'],
+    },
+    address: {
+      type: String,
+      required: [true, 'Present address is required'],
+    },
+    profileImg: { type: String, default: '' },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    }
+  }
+);
+
+// Query Middleware
+merchantSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
 });
 
-module.exports = Merchant;
-//json data demo by following above schema
-// {
-//   "companyInfo": {
-//     "companyName": "XYZ Express",
-//     "siteUrl": "https://xyzexpress.com",
-//     "city": "Dhaka",
-//     "zone": "Gulshan"
-//   },
-//   "accountInfo": {
-//     "name": "John Doe",
-//     "email": "john.doe@example.com",
-//     "mobile": "0123456789",
-//     "password": "mypassword123"
-//   },
-//   "paymentDetails": {
-//     "bkash": {
-//       "bkashType": "agent",
-//       "bkashNumber": "0123456789"
-//     },
-//     "bank": {
-//       "bankName": "brac",
-//       "accountHolder": "John Doe",
-//       "accountNumber": "1234567890",
-//       "branchName": "Gulshan Branch",
-//       "routingNumber": "123456"
-//     }
-//   }
-// }
+merchantSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+merchantSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
+//creating a custom static method
+merchantSchema.statics.isUserExists = async function (id) {
+  const existingUser = await merchant.findOne({ id });
+  return existingUser;
+};
+
+export const merchant = model('merchant', merchantSchema);
+
+
+//------------------------------------------------------------------------------
+

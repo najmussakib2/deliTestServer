@@ -58,16 +58,16 @@ const createmerchantIntoDB = async (
     payload.user = newUser[0]._id; //reference _id
     console.log(payload);
     // create a merchant (transaction-2)
-    const newmerchant = await merchant.create([payload], { session });
+    const newMerchant = await merchant.create([payload], { session });
 
-    if (!newmerchant.length) {
+    if (!newMerchant.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create merchant');
     }
 
     await session.commitTransaction();
     await session.endSession();
 
-    return newmerchant;
+    return newMerchant;
   } catch (err) {
     await session.abortTransaction();
     await session.endSession();

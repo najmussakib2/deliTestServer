@@ -4,10 +4,11 @@ import auth from '../../middlewares/auth.js';
 import validateRequest from '../../middlewares/validateRequest.js';
 import { upload } from '../../utils/sendImageToCloudinary.js';
 import { createAdminValidationSchema } from '../Admin/admin.validation.js';
-import { createmerchantValidationSchema } from '../merchant/merchant.validation.js';
+
 import { USER_ROLE } from './user.constant.js';
 import { UserControllers } from './user.controller.js';
 import { UserValidation } from './user.validation.js';
+import { createMerchantValidationSchema } from '../merchant/merchant.validation.js';
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ router.post(
     req.body = JSON.parse(req.body.data);
     next();
   },
-  validateRequest(createmerchantValidationSchema),
+  validateRequest(createMerchantValidationSchema),
   UserControllers.createmerchant,
 );
 

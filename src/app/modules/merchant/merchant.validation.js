@@ -1,48 +1,48 @@
 import { z } from 'zod';
 
-const createUserNameValidationSchema = z.object({
-  firstName: z
-    .string()
-    .min(1)
-    .max(20)
-    .refine((value) => /^[A-Z]/.test(value), {
-      message: 'First Name must start with a capital letter',
-    }),
-  middleName: z.string(),
-  lastName: z.string(),
+// Company Schema
+const companySchema = z.object({
+  companyName: z.string(),
+  siteUrl: z.string().url().optional(),
+  city: z.string(),
+  zone: z.string().optional()
 });
 
-const createGuardianValidationSchema = z.object({
-  fatherName: z.string(),
-  fatherOccupation: z.string(),
-  fatherContactNo: z.string(),
-  motherName: z.string(),
-  motherOccupation: z.string(),
-  motherContactNo: z.string(),
+// Payment Schema
+const bkashSchema = z.object({
+  bkashType: z.enum(['agent', 'personal']),
+  bkashNumber: z.string()
 });
 
-const createLocalGuardianValidationSchema = z.object({
-  name: z.string(),
-  occupation: z.string(),
-  contactNo: z.string(),
-  address: z.string(),
+const bankSchema = z.object({
+  bankName: z.enum(['brac', 'dbbl', 'other']),
+  accountHolder: z.string(),
+  accountNumber: z.string(),
+  branchName: z.string().optional(),
+  routingNumber: z.string().optional()
 });
 
-export const createmerchantValidationSchema = z.object({
+const paymentSchema = z.object({
+  bkash: bkashSchema.optional(),
+  bank: bankSchema.optional()
+}).refine(data => data.bkash || data.bank, {
+  message: "Either bkash or bank information is required"
+});
+
+export const createMerchantValidationSchema = z.object({
   body: z.object({
     password: z.string().max(20).optional(),
     merchant: z.object({
-      name: createUserNameValidationSchema,
+      company: companySchema,
+      payment: paymentSchema,
+      name: z.string(),
       gender: z.enum(['male', 'female', 'other']),
-      dateOfBirth: z.string().optional(),
       email: z.string().email(),
       contactNo: z.string(),
       emergencyContactNo: z.string(),
-      bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
-      presentAddress: z.string(),
-      permanentAddress: z.string(),
-      guardian: createGuardianValidationSchema,
-      localGuardian: createLocalGuardianValidationSchema,
+      address: z.string(),
+      profileImg: z.string().url().optional(),
+      isDeleted: z.boolean().optional()
     }),
   }),
 });
@@ -90,6 +90,6 @@ export const updatemerchantValidationSchema = z.object({
 });
 
 export const merchantValidations = {
-  createmerchantValidationSchema,
+  createMerchantValidationSchema,
   updatemerchantValidationSchema,
 };
