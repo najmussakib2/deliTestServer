@@ -5,7 +5,17 @@ import catchAsync from '../../utils/catchAsync.js';
 import sendResponse from '../../utils/sendResponse.js';
 import { AuthServices } from './auth.service.js';
 
+const registerUser = catchAsync(async (req, res) => {
+  console.log("9 controller: ",req.body);
+  const result = await AuthServices.registerUser(req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is registered in successfully!',
+  });
+});
 const loginUser = catchAsync(async (req, res) => {
+  console.log("9 controller: ",req.body);
   const result = await AuthServices.loginUser(req.body);
   const { refreshToken, accessToken, needsPasswordChange } = result;
 
@@ -79,6 +89,7 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 export const AuthControllers = {
+  registerUser,
   loginUser,
   changePassword,
   refreshToken,

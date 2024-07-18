@@ -12,6 +12,11 @@ router.post(
   validateRequest(AuthValidation.loginValidationSchema),
   AuthControllers.loginUser,
 );
+router.post(
+  '/register',
+  validateRequest(AuthValidation.RegisterValidationSchema),
+  AuthControllers.registerUser,
+);
 
 router.post(
   '/change-password',

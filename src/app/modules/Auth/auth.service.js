@@ -6,10 +6,17 @@ import AppError from '../../errors/AppError.js';
 import { sendEmail } from '../../utils/sendEmail.js';
 import { User } from '../User/user.model.js';
 import { createToken, verifyToken } from './auth.utils.js';
+import { RegisteredUser } from './register.model.js';
+
+const registerUser = async(data)=>{
+  const result = await RegisteredUser.create(data);
+  return result;
+}
 
 const loginUser = async (payload) => {
   // checking if the user is exist
-  const user = await User.isUserExistsByCustomId(payload.id);
+  const user = await User.findOne({ email: payload.email });
+  console.log("13",User);
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
@@ -38,7 +45,7 @@ const loginUser = async (payload) => {
   //create token and sent to the  client
 
   const jwtPayload = {
-    userId: user.id,
+    email: user.email,
     role: user.role,
   };
 
@@ -257,6 +264,7 @@ const resetPassword = async (
 };
 
 export const AuthServices = {
+  registerUser,
   loginUser,
   changePassword,
   refreshToken,
