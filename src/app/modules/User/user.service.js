@@ -88,6 +88,8 @@ const createAdminIntoDB = async (file,password,payload) => {
   //set admin email
   userData.email = payload.email;
 
+  console.log("91 service",payload)
+
   const session = await mongoose.startSession();
 
   try {
@@ -102,9 +104,10 @@ const createAdminIntoDB = async (file,password,payload) => {
       const { secure_url } = await sendImageToCloudinary(imageName, path);
       payload.profileImg = secure_url;
     }
-
+    console.log("107 ", payload)
     // create a user (transaction-1)
     const newUser = await User.create([userData], { session });
+    console.log("110 ", payload)
 
     //create a admin
     if (!newUser.length) {
@@ -112,8 +115,8 @@ const createAdminIntoDB = async (file,password,payload) => {
     }
     // set id , _id as user
     payload.id = newUser[0].id;
-    payload.user = newUser[0]._id; //reference _id
-
+    payload.user = newUser[0]._id;
+    console.log("116 service", payload)
     // create a admin (transaction-2)
     const newAdmin = await Admin.create([payload], { session });
 
@@ -126,6 +129,7 @@ const createAdminIntoDB = async (file,password,payload) => {
 
     return newAdmin;
   } catch (err) {
+    console.log(err)
     await session.abortTransaction();
     await session.endSession();
     throw new Error(err);

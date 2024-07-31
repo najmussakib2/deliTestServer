@@ -30,7 +30,9 @@ router.post(
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   upload.single('file'),
   (req, res, next) => {
+    console.log("33 ",req.body.data)
     req.body = JSON.parse(req.body.data);
+    console.log("34 ",req.body)
     next();
   },
   validateRequest(createAdminValidationSchema),

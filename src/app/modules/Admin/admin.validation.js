@@ -16,7 +16,7 @@ export const createAdminValidationSchema = z.object({
       gender: z.enum([...Gender]),
       dateOfBirth: z.string().optional(),
       email: z.string().email(),
-      contactNo: z.string(),
+      Mobile: z.string(),
       emergencyContactNo: z.string(),
       bloodGroup: z.enum([...BloodGroup]),
       presentAddress: z.string(),
