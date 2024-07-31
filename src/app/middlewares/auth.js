@@ -9,7 +9,6 @@ import catchAsync from '../utils/catchAsync.js';
 const auth = (...requiredRoles) => {
   return catchAsync(async (req, res, next) => {
     const token = req.headers.authorization;
-
     // checking if the token is missing
     if (!token) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
@@ -21,10 +20,12 @@ const auth = (...requiredRoles) => {
       config.jwt_access_secret,
     );
 
-    const { role, userId, iat } = decoded;
+    const { role, Mobile, iat } = decoded;
+
+    console.log(decoded)
 
     // checking if the user is exist
-    const user = await User.isUserExistsByCustomId(userId);
+    const user = await User.findOne({ Mobile: Mobile });
 
     if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');

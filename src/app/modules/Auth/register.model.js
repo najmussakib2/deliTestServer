@@ -2,7 +2,6 @@ import { model, Schema } from "mongoose";
 import { UserStatus } from "../User/user.constant.js";
 
 const RegisterUserSchema = new Schema({
-    id: {type: String,required: true,unique: true},
     Address: { type: String, required: true },
     BankAccountHolder: { type: String, required: function() { return this.PaymentMethod === 'Bank'; } },
     BankAccountNo: { type: String, required: function() { return this.PaymentMethod === 'Bank'; } },

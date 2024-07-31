@@ -14,9 +14,9 @@ const registerUser = async(data)=>{
 }
 
 const loginUser = async (payload) => {
+  console.log("17",payload)
   // checking if the user is exist
-  const user = await User.findOne({ email: payload.email });
-  console.log("13",User);
+  const user = await User.findOne({ Mobile: payload.Mobile });
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
@@ -38,14 +38,14 @@ const loginUser = async (payload) => {
   }
 
   //checking if the password is correct
-
+  console.log(payload.password, user)
   if (!(await User.isPasswordMatched(payload?.password, user?.password)))
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
 
   //create token and sent to the  client
 
   const jwtPayload = {
-    email: user.email,
+    Mobile: user.Mobile,
     role: user.role,
   };
 

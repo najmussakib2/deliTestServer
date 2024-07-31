@@ -8,13 +8,12 @@ import { AuthValidation } from './auth.validation.js';
 const router = express.Router();
 
 router.post(
-  '/login',
+  '/login',(req,res,Next)=>{console.log("11 route",req.body), Next()},
   validateRequest(AuthValidation.loginValidationSchema),
   AuthControllers.loginUser,
 );
 router.post(
   '/register',
-  validateRequest(AuthValidation.RegisterValidationSchema),
   AuthControllers.registerUser,
 );
 
