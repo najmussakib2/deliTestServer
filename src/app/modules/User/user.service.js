@@ -28,6 +28,7 @@ const createmerchantIntoDB = async (
   userData.role = 'merchant';
   // set merchant email
   userData.email = payload.email;
+  userData.Mobile = payload.Mobile;
 
 
   const session = await mongoose.startSession();

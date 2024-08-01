@@ -38,7 +38,7 @@ export const createMerchantValidationSchema = z.object({
       name: z.string(),
       gender: z.enum(['male', 'female', 'other']),
       email: z.string().email(),
-      contactNo: z.string(),
+      Mobile: z.string(),
       emergencyContactNo: z.string(),
       address: z.string(),
       profileImg: z.string().url().optional(),

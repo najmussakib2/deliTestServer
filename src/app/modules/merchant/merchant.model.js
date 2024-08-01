@@ -96,7 +96,7 @@ const merchantSchema = new Schema(
       required: [true, 'Email is required'],
       unique: true,
     },
-    contactNo: { 
+    Mobile: { 
       type: String, 
       required: [true, 'Contact number is required'] 
     },
