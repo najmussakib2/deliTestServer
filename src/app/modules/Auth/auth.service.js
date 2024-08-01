@@ -73,7 +73,7 @@ const changePassword = async (
   payload,
 ) => {
   // checking if the user is exist
-  const user = await User.isUserExistsByCustomId(userData.userId);
+  const user = await User.findOne(userData.Mobile);
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
@@ -95,6 +95,8 @@ const changePassword = async (
   }
 
   //checking if the password is correct
+
+  console.log("99",payload.oldPassword, user?.password)
 
   if (!(await User.isPasswordMatched(payload.oldPassword, user?.password)))
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');

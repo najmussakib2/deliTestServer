@@ -79,7 +79,7 @@ const createmerchantIntoDB = async (
 const createAdminIntoDB = async (file,password,payload) => {
   // create a user object
   const userData = {};
-  console.log(file, password, payload)
+
   //if password is not given , use deafult password
   userData.password = password || (config.default_password);
 
@@ -88,14 +88,13 @@ const createAdminIntoDB = async (file,password,payload) => {
   //set admin email
   userData.email = payload.email;
 
-  console.log("91 service",payload)
-
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
     //set  generated id
     userData.id = await generateAdminId();
+    userData.Mobile = payload.Mobile;
 
     if (file) {
       const imageName = `${userData.id}${payload?.name?.firstName}`;
@@ -104,10 +103,9 @@ const createAdminIntoDB = async (file,password,payload) => {
       const { secure_url } = await sendImageToCloudinary(imageName, path);
       payload.profileImg = secure_url;
     }
-    console.log("107 ", payload)
+
     // create a user (transaction-1)
     const newUser = await User.create([userData], { session });
-    console.log("110 ", payload)
 
     //create a admin
     if (!newUser.length) {
@@ -116,7 +114,7 @@ const createAdminIntoDB = async (file,password,payload) => {
     // set id , _id as user
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id;
-    console.log("116 service", payload)
+
     // create a admin (transaction-2)
     const newAdmin = await Admin.create([payload], { session });
 
