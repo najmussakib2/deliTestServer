@@ -22,8 +22,6 @@ const auth = (...requiredRoles) => {
 
     const { role, Mobile, iat } = decoded;
 
-    console.log(decoded)
-
     // checking if the user is exist
     const user = await User.findOne({ Mobile: Mobile });
 
@@ -62,7 +60,7 @@ const auth = (...requiredRoles) => {
       );
     }
 
-    req.user = decoded & { role };
+    req.user = decoded;
     next();
   });
 };

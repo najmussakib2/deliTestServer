@@ -15,7 +15,7 @@ const companySchema = new Schema({
   zone: {
     type: String
   }
-});
+},{ _id : false });
 
 const paymentSchema = new Schema({
   bkash: {
@@ -54,7 +54,7 @@ const paymentSchema = new Schema({
       }
     }
   }
-});
+},{ _id : false });
 
 
 const merchantSchema = new Schema(

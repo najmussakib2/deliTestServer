@@ -35,7 +35,7 @@ const loginUser = async (payload) => {
   if (userStatus === 'blocked') {
     throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
   }
-
+console.log(user);
   //checking if the password is correct
   if (!(await User.isPasswordMatched(payload?.password, user?.password)))
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
@@ -71,7 +71,8 @@ const changePassword = async (
   payload,
 ) => {
   // checking if the user is exist
-  const user = await User.findOne(userData.Mobile);
+  const user = await User.findOne({Mobile: userData.Mobile});
+  console.log(user, payload)
 
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
@@ -94,7 +95,7 @@ const changePassword = async (
 
   //checking if the password is correct
 
-  console.log("99",payload.oldPassword, user?.password)
+  
 
   if (!(await User.isPasswordMatched(payload.oldPassword, user?.password)))
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
@@ -107,7 +108,7 @@ const changePassword = async (
 
   await User.findOneAndUpdate(
     {
-      id: userData.userId,
+      Mobile: userData.Mobile,
       role: userData.role,
     },
     {

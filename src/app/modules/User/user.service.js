@@ -144,10 +144,6 @@ const getMe = async (userId, role) => {
     result = await Admin.findOne({ id: userId }).populate('user');
   }
 
-  if (role === 'faculty') {
-    result = await Faculty.findOne({ id: userId }).populate('user');
-  }
-
   return result;
 };
 

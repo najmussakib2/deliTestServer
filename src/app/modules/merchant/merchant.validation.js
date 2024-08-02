@@ -41,8 +41,6 @@ export const createMerchantValidationSchema = z.object({
       Mobile: z.string(),
       emergencyContactNo: z.string(),
       address: z.string(),
-      profileImg: z.string().url().optional(),
-      isDeleted: z.boolean().optional()
     }),
   }),
 });
