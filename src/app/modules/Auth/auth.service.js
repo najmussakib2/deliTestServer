@@ -14,7 +14,6 @@ const registerUser = async(data)=>{
 }
 
 const loginUser = async (payload) => {
-  console.log("17",payload)
   // checking if the user is exist
   const user = await User.findOne({ Mobile: payload.Mobile });
 
@@ -38,7 +37,6 @@ const loginUser = async (payload) => {
   }
 
   //checking if the password is correct
-  console.log(payload.password, user)
   if (!(await User.isPasswordMatched(payload?.password, user?.password)))
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
 
