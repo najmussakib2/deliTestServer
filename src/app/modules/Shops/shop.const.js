@@ -1,0 +1,16 @@
+export const PARCEL_CATEGORY = [  
+    'Books',
+    'Clothing',
+    'Crafts',
+    'Community',
+    'E-Commerce',
+    'Electronics & Gadgets',
+    'Fashon Accessories',
+    'Food',
+    'Groceries',
+    'Health & Fitnesss',
+    'Stationaries',
+    'Others',
+    'Furniture',
+    'Kids & Mom',
+    'Decor']

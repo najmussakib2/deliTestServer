@@ -1,7 +1,18 @@
+import httpStatus from "http-status";
+import AppError from "../../errors/AppError.js";
+import { User } from "../User/user.model.js";
 import {Shop} from "./shop.model.js"
+import { USER_ROLE } from "../User/user.constant.js";
 
 const createShopInDB = async(shopData)=>{
     console.log(shopData);
+    const user = User.findOne({Phone: shopData.Phone});
+    if(!user){
+      throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
+    }
+    if(user.role === USER_ROLE.admin || USER_ROLE.superAdmin){
+      throw new AppError(httpStatus.FORBIDDEN, 'cant create shop with superAdmin or admin Mobile No. !');
+    }
     const result = await Shop.create(shopData);
     return result
 }

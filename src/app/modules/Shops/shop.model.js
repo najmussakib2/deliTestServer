@@ -1,15 +1,15 @@
 import {Schema, model} from 'mongoose';
+import { PARCEL_CATEGORY } from './shop.const';
 
 const shopSchema = new Schema({
-    Merchant_Email: {
+    Phone: {
       type: String,
       required: true,
-      trim: true,
-      lowercase: true
     },
     Shop_Type: {
       type: String,
-      required: true
+      required: true,
+      enum : ['Business use','Personal use']
     },
     Shop_Name: {
       type: String,
@@ -23,11 +23,13 @@ const shopSchema = new Schema({
     },
     Shop_Address: {
       type: String,
-      required: true
+      required: true,
+      trim: true,
     },
     Parcel_Category: {
       type: String,
-      required: true
+      required: true,
+      enum: PARCEL_CATEGORY
     }
   });
   

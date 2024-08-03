@@ -1,25 +1,24 @@
+import catchAsync from "../../utils/catchAsync.js";
+import sendResponse from "../../utils/sendResponse.js";
 import { shopServices } from "./shop.service.js";
 import ShopZodSchema from "./shop.zodValidation.js";
 
 
-const createShop = async (req, res) => {
-  try {
+const createShop = catchAsync(async (req, res) => {
     const shop = req.body;
     const zodParsedData = ShopZodSchema.parse(shop);
     const result = await shopServices.createShopInDB(zodParsedData);
 
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
-      message: 'Shop is created succesfully',
+      message: 'merchant is created successfully',
       data: result,
-
     });
     console.log(result)
-  } catch (err) {
-    console.log(err);
-  }
 
-}
+
+});
 
 const getAllShops = async (req, res) => {
   try {
