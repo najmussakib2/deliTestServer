@@ -74,7 +74,7 @@ const deleteSingleParcel = catchAsync(async (req, res) => {
 
 const getAllParcels = catchAsync(async (req, res) => {
   const result = await parcelServices.getAllParcelsFromDB(req.query);
-  console.log("77 controller",result)
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

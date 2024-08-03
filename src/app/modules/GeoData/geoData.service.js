@@ -1,6 +1,7 @@
+import { geoData } from "./geoData.model.js";
 
 const getAllGeoDataFromDB = async () => {
-    const result = await massage.find();
+    const result = await geoData.find();
     return result;
   };
 const getAllDivisionDataFromDB = async () => {

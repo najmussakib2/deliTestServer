@@ -8,16 +8,25 @@ import validateRequest from "../../middlewares/validateRequest.js";
 
 const router = express.Router()
 
-router.post("/create-shop",auth(
+router.post("/create-shop",
+
+  auth(
     USER_ROLE.superAdmin,
     USER_ROLE.admin,
     USER_ROLE.merchant,
-  ),validateRequest(ShopZodSchema), shopController.createShop);
+  ),
+
+  // validateRequest(ShopZodSchema),
+    
+  shopController.createShop);
+
 
 router.get("/",auth(
     USER_ROLE.superAdmin,
     USER_ROLE.admin,
   ), shopController.getAllShops);
+
+
 
 router.get("/:email",auth(
   USER_ROLE.superAdmin,

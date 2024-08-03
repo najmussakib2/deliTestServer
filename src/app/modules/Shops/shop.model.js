@@ -1,8 +1,8 @@
 import {Schema, model} from 'mongoose';
-import { PARCEL_CATEGORY } from './shop.const';
+import { PARCEL_CATEGORY } from './shop.const.js';
 
 const shopSchema = new Schema({
-    Phone: {
+    Mobile: {
       type: String,
       required: true,
     },
@@ -31,6 +31,9 @@ const shopSchema = new Schema({
       required: true,
       enum: PARCEL_CATEGORY
     }
+  },
+  {
+    timestamps: true,
   });
   
   

@@ -1,15 +1,9 @@
 import { Schema, model } from "mongoose";
 const parcelSchema = new Schema({
-    email: {
+    Mobile: {
       type: String,
       required: true,
-      trim: true,
-      lowercase: true
     },
-    // sender_name: {
-    //   type: String,
-    //   required: true
-    // },
     sender_phone: {
       type: String,
       required: true
@@ -22,26 +16,14 @@ const parcelSchema = new Schema({
       type: String,
       required: true
     },
-    // parcel_type: {
-    //   type: String,
-    //   required: true
-    // },
     parcel_weight_amount: {
       type: Number,
       required: true
     },
-    // delivery_type: {
-    //   type: String,
-    //   required: true
-    // },
     delivery_area_amount: {
       type: Number,
       required: true
     },
-    // product_price: {
-    //   type: Number,
-    //   required: true
-    // },
     collection_amount: {
       type: Number,
       required: true

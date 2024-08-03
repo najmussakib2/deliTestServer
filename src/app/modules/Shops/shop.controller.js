@@ -1,3 +1,4 @@
+import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync.js";
 import sendResponse from "../../utils/sendResponse.js";
 import { shopServices } from "./shop.service.js";
@@ -6,33 +7,31 @@ import ShopZodSchema from "./shop.zodValidation.js";
 
 const createShop = catchAsync(async (req, res) => {
     const shop = req.body;
-    const zodParsedData = ShopZodSchema.parse(shop);
-    const result = await shopServices.createShopInDB(zodParsedData);
+    console.log(shop)
+    // const zodParsedData = ShopZodSchema.parse(shop);
+    const result = await shopServices.createShopInDB(shop);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'merchant is created successfully',
+      message: 'Shop is created successfully',
       data: result,
     });
-    console.log(result)
-
-
 });
 
-const getAllShops = async (req, res) => {
-  try {
-    const result = await shopServices.getAllShopsFromDB();
+const getAllShops =  catchAsync(async (req, res) => {
+ 
+    const result = await shopServices.getAllShopsFromDB(req.query);
 
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
-      message: 'shops are retrieved succesfully',
-      data: result,
+      message: 'parcels are retrieved successfully',
+      meta: result.meta,
+      data: result.data,
     });
-  } catch (err) {
-    console.log(err);
-  }
-};
+
+});
 
 const getSpecificShopForMarchant = async (req, res) => {
   try {

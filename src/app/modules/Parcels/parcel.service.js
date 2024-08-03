@@ -65,7 +65,7 @@ const getAllParcelsFromDB = async (query) => {
   const resultQuery = new QueryBuilder(Parcel.find(), query)
     .search(parcelSearchableFields)  
     .filter()                        
-    .sort()                          
+    .sort({ createdAt: -1 })                          
     .fields()                        
     .paginate()                  
     .limit();                        
