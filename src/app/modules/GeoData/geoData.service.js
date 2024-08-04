@@ -1,8 +1,19 @@
+
+
+import QueryBuilder from "../../builder/QueryBuilder.js";
 import { geoData } from "./geoData.model.js";
 
-const getAllGeoDataFromDB = async () => {
-    const result = await geoData.find();
-    return result;
+const getAllGeoDataFromDB = async (query) => {
+  const resultQuery = new QueryBuilder(geoData.find(), query)
+  .search(["id","_id","name","division_id","district_id","upazilla_id"])  
+  .filter()                        
+  .sort()                          
+  .fields()
+  .paginate()                  
+  .limit();                                               
+const result = await resultQuery.modelQuery;
+const meta = await resultQuery.countTotal();
+return { data: result, meta };
   };
 const getAllDivisionDataFromDB = async () => {
     const result = await massage.find();

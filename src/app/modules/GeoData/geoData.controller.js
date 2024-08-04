@@ -1,20 +1,19 @@
+import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync.js";
+import sendResponse from "../../utils/sendResponse.js";
 import { geoServices } from "./geoData.service.js";
 
-const getAllGeoData= async ()=>{
-
-    try {
-        const result = await geoServices.getAllGeoDataFromDB();
-    
-        res.status(200).json({
+const getAllGeoData= catchAsync(async (req,res)=>{
+        const result = await geoServices.getAllGeoDataFromDB(req.query);    
+        sendResponse(res, {
+          statusCode: httpStatus.OK,
           success: true,
-          message: "massages are retrieved succesfully",
-          data: result,
+          message: 'geo data are retrieved successfully',
+          meta: result.meta,
+          data: result.data,
         });
-      } catch (err) {
-        console.log(err);
-      }
     
-}
+});
 const getAllDivisionData = async()=>{
     try {
         const result = await geoServices.getAllDivisionDataFromDB();

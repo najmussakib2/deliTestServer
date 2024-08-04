@@ -30,7 +30,6 @@ const getAllShopsFromDB = async (query) => {
   .paginate()                  
   .limit();                        
 const result = await resultQuery.modelQuery;
-console.log(result)
 const meta = await resultQuery.countTotal();
 return { data: result, meta };
   };
