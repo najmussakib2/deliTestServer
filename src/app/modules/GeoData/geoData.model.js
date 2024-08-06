@@ -1,44 +1,106 @@
 import { Schema, model } from "mongoose";
 
-const unionSchema = new Schema({
-  id: String,
-  upazilla_id: String,
-  name: String,
-  bn_name: String,
-  url: String
-});
-
-// Define the Upazilla Schema
-const upazillaSchema = new Schema({
-  id: String,
-  district_id: String,
-  name: String,
-  bn_name: String,
-  url: String,
-  unions: [unionSchema]
-});
-
-// Define the District Schema
-const districtSchema = new Schema({
-  id: String,
-  division_id: String,
-  name: String,
-  bn_name: String,
-  lat: String,
-  lon: String,
-  url: String,
-  upazillas: [upazillaSchema]
-});
-
-// Define the Division Schema
 const divisionSchema = new Schema({
-  id: String,
-  name: String,
-  bn_name: String,
-  url: String,
-  districts: [districtSchema]
+  id: {
+      type: String,
+      required: true,
+      unique: true
+  },
+  name: {
+      type: String,
+      required: true
+  },
+  bn_name: {
+      type: String,
+      required: true
+  },
+  url: {
+      type: String,
+      required: true
+  }
 });
 
+const districtSchema = new Schema({
+  id: {
+      type: String,
+      required: true,
+      unique: true
+  },
+  division_id: {
+      type: String,
+      required: true
+  },
+  name: {
+      type: String,
+      required: true
+  },
+  bn_name: {
+      type: String,
+      required: true
+  },
+  lat: {
+      type: String,
+      required: true
+  },
+  lon: {
+      type: String,
+      required: true
+  },
+  url: {
+      type: String,
+      required: true
+  }
+});
 
+const upazillaSchema = new Schema({
+  id: {
+      type: String,
+      required: true,
+      unique: true
+  },
+  district_id: {
+      type: String,
+      required: true
+  },
+  name: {
+      type: String,
+      required: true
+  },
+  bn_name: {
+      type: String,
+      required: true
+  },
+  url: {
+      type: String,
+      required: true
+  }
+});
 
-export const geoData = model('geoData', divisionSchema);
+const unionSchema = new Schema({
+  id: {
+      type: String,
+      required: true,
+      unique: true
+  },
+  upazilla_id: {
+      type: String,
+      required: true
+  },
+  name: {
+      type: String,
+      required: true
+  },
+  bn_name: {
+      type: String,
+      required: true
+  },
+  url: {
+      type: String,
+      required: true
+  }
+});
+
+export const Union = model('Union', unionSchema);
+export const Upazilla = model('Upazilla', upazillaSchema);
+export const District = model('District', districtSchema);
+export const Division = model('Division', divisionSchema);

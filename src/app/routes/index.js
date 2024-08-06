@@ -6,7 +6,8 @@ import { AuthRoutes } from '../modules/Auth/auth.route.js';
 import { shopRoutes } from '../modules/Shops/shop.routes.js';
 import { parcelRoutes } from '../modules/Parcels/parcel.routes.js';
 import { massageRoutes } from '../modules/Massages/massage.routes.js';
-import { geoRoutes } from '../modules/GeoData/geoData.route.js';
+import { geoRoutes } from '../modules/GeoData/geoData.servData.js';
+
 
 
 const router = Router();
