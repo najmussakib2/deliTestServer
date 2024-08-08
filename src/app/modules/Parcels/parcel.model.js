@@ -4,15 +4,11 @@ const parcelSchema = new Schema({
       type: String,
       required: true,
     },
-    sender_phone: {
+    customer_name: {
       type: String,
       required: true
     },
-    recipient_name: {
-      type: String,
-      required: true
-    },
-    recipient_phone: {
+    customer_phone: {
       type: String,
       required: true
     },
@@ -32,7 +28,13 @@ const parcelSchema = new Schema({
       type: String,
       required: true
     },
-    recipient_address: {
+    shop: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'Shop id is required'],
+      unique: true,
+      ref: 'Shop',
+    },
+    customer_address: {
       type: String,
       required: true
     },
@@ -51,23 +53,21 @@ const parcelSchema = new Schema({
       type: Number,
       required: true
     },
-    discount: {
-      type: Number,
-      required: true
-    },
     total_payable: {
       type: Number,
       required: true
     },
     status: {
       type: String,
-      enum : ['pending','approved'],
-      required: true
+      enum : ['pending',"processing","delivered"],
+      required: true,
+      default: "pending" 
     },
     payment_status: {
       type: String,
       enum : ['paid','unpaid'],
-      required: true
+      required: true,
+      default: "unpaid"
     }
   },
   {

@@ -21,7 +21,8 @@ router.get("/:id", auth(
 ), parcelController.getSpacificParcel);
 
 router.post("/create-parcel", auth(USER_ROLE.superAdmin, USER_ROLE.admin, USER_ROLE.merchant),
-  validateRequest(parcelZodSchema), parcelController.createParcel);
+  // validateRequest(parcelZodSchema),
+   parcelController.createParcel);
 
 router.patch("/change-payment/:id", parcelController.updateParcelPayment);
 
