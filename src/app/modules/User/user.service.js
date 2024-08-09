@@ -147,6 +147,10 @@ const getMe = async (userId, role) => {
   return result;
 };
 
+const RegisteredUser = ()=>{
+  
+}
+
 const changeStatus = async (id, payload) => {
   const result = await User.findByIdAndUpdate(id, payload, {
     new: true,
