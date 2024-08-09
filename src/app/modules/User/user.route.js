@@ -57,4 +57,13 @@ router.get(
   UserControllers.getMe,
 );
 
+router.get(
+  '/registered-user',
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+  ),
+  UserControllers.getAllRegisteredUser,
+);
+
 export const UserRoutes = router;

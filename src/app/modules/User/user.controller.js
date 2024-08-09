@@ -50,6 +50,17 @@ const getMe = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getAllRegisteredUser = catchAsync(async (req, res) => {
+  const { userId, role } = req.user;
+  const result = await UserServices.getMe(userId, role);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is retrieved successfully',
+    data: result,
+  });
+});
 
 const changeStatus = catchAsync(async (req, res) => {
   const id = req.params.id;
@@ -66,6 +77,7 @@ const changeStatus = catchAsync(async (req, res) => {
 export const UserControllers = {
   createmerchant,
   createAdmin,
+  getAllRegisteredUser,
   getMe,
   changeStatus,
 };
