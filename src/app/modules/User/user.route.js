@@ -59,10 +59,10 @@ router.get(
 
 router.get(
   '/registered-user',
-  auth(
-    USER_ROLE.superAdmin,
-    USER_ROLE.admin,
-  ),
+  // auth(
+  //   USER_ROLE.superAdmin,
+  //   USER_ROLE.admin,
+  // ),
   UserControllers.getAllRegisteredUser,
 );
 

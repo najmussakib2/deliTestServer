@@ -51,8 +51,7 @@ const getMe = catchAsync(async (req, res) => {
   });
 });
 const getAllRegisteredUser = catchAsync(async (req, res) => {
-  const { userId, role } = req.user;
-  const result = await UserServices.getMe(userId, role);
+  const result = await UserServices.getAllRegisteredUser(req.query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

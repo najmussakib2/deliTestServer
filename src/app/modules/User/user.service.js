@@ -12,6 +12,8 @@ import {
   generateAdminId,
   generateMerchantId,
 } from './user.utils.js';
+import {RegisteredUser} from '../Auth/register.model.js'
+import QueryBuilder from '../../builder/QueryBuilder.js';
 
 const createmerchantIntoDB = async (
   file,
@@ -147,7 +149,17 @@ const getMe = async (userId, role) => {
   return result;
 };
 
-const RegisteredUser = ()=>{
+const getAllRegisteredUser =async (query)=>{
+  const resultQuery = new QueryBuilder(RegisteredUser.find(), query)
+  .search(["Mobile","Email","Name","Company","createdAt"])  
+  .filter()                        
+  .sort({ createdAt: -1 })                          
+  .fields()                        
+  .paginate()                  
+  .limit();                        
+const result = await resultQuery.modelQuery;
+const meta = await resultQuery.countTotal();
+return { data: result, meta };
   
 }
 
@@ -162,5 +174,6 @@ export const UserServices = {
   createmerchantIntoDB,
   createAdminIntoDB,
   getMe,
+  getAllRegisteredUser,
   changeStatus,
 };
